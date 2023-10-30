@@ -96,9 +96,9 @@ var coolants = {
   throughTool: {on:51, off:52},
   air: {on:7, off:9},
   airThroughTool: {on:12, off:9},
-  suction: {},
-  // floodMist: flood on M8, air on M7, flood off M9, air offM
-  floodMist: {on: [8, 7], off: 9},
+  suction: {on: 10, off: 11},
+  // floodMist: flood on M8, air on M7, air suction on M10, flood off M9
+  floodMist: {on: [8, 7, 10], off: 9},
   floodThroughTool: {},
   off: 9
 };
