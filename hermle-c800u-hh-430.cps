@@ -1095,20 +1095,6 @@ function onSection() {
       onCommand(COMMAND_BREAK_CONTROL);
     }
 
-    if (false) {
-      var zRange = currentSection.getGlobalZRange();
-      var numberOfSections = getNumberOfSections();
-      for (var i = getCurrentSectionId() + 1; i < numberOfSections; ++i) {
-        var section = getSection(i);
-        var _tool = section.getTool();
-        if (_tool.number != tool.number) {
-          break;
-        }
-        zRange.expandToRange(section.getGlobalZRange());
-      }
-
-      writeStructureComment("T" + tool.number + "-D" + spatialFormat.format(tool.diameter) + "-CR:" + spatialFormat.format(tool.cornerRadius) + "-ZMIN:" + spatialFormat.format(zRange.getMinimum()) + "-ZMAX:" + spatialFormat.format(zRange.getMaximum()));
-    }
 
     writeBlock(
       "TOOL CALL " + tool.number + SP + getSpindleAxisLetter(machineConfiguration.getSpindleAxis()) + conditional(!isProbeOperation(), " S" + rpmFormat.format(spindleSpeed))
@@ -2288,41 +2274,6 @@ function onCircular(clockwise, cx, cy, cz, x, y, z, feed) {
     return;
   }
 
-  if (false && !isHelical() && (Math.abs(getCircularSweep()) <= 2*Math.PI*0.9)) { // use IPA to avoid radius compensation errors
-    switch (getCircularPlane()) {
-    case PLANE_XY:
-      writeBlock(
-        "C" + xOutput.format(x) + yOutput.format(y) +
-        (clockwise ? " DR-" : " DR+") +
-        radiusCompensationTable.lookup(radiusCompensation) +
-        getFeed(feed)
-      );
-      break;
-    case PLANE_ZX:
-      writeBlock(
-        "C" + xOutput.format(x) + zOutput.format(z) +
-        (clockwise ? " DR-" : " DR+") +
-        radiusCompensationTable.lookup(radiusCompensation) +
-        getFeed(feed)
-      );
-      break;
-    case PLANE_YZ:
-      writeBlock(
-        "C" + yOutput.format(y) + zOutput.format(z) +
-        (clockwise ? " DR-" : " DR+") +
-        radiusCompensationTable.lookup(radiusCompensation) +
-        getFeed(feed)
-      );
-      break;
-    default:
-      var t = tolerance;
-      if ((t == 0) && hasParameter("operation:tolerance")) {
-        t = getParameter("operation:tolerance");
-      }
-      linearize(t);
-    }
-    return;
-  }
 
   if (isHelical()) {
     if (getCircularPlane() == PLANE_XY) {
@@ -2621,6 +2572,7 @@ function writeRetract() {
       if (properties.useM140) {
         validate((arguments.length <= 1), "Retracts for the Z-axis have to be specified separately by using the useM140 property.");
         writeBlock("L " + mFormat.format(140) + " MB MAX");
+        writeBlock("L Y+639 FMAX M91");
         retracted = true; // specifies that the tool has been retracted to the safe plane
         zOutput.reset();
         return;
