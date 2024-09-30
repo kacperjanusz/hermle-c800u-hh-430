@@ -1065,7 +1065,6 @@ function onSection() {
     // retract to safe plane
     if (!properties.useM140 || !isFirstSection()) { // cannot use M140 here since no tool is called yet which specifies the tool axis for M140
       writeRetract(Z);
-      writeBlock("L Y+639 FMAX M91")
     }
 
     if (fullRetract) {
@@ -2596,6 +2595,8 @@ function writeRetract() {
       if (properties.useM140) {
         validate((arguments.length <= 1), "Retracts for the Z-axis have to be specified separately by using the useM140 property.");
         writeBlock("L " + mFormat.format(140) + " MB MAX");
+        writeBlock("L Y+639 FMAX M91");
+
         retracted = true; // specifies that the tool has been retracted to the safe plane
         zOutput.reset();
         return;
@@ -2664,7 +2665,6 @@ function onClose() {
   }
 
   onCommand(COMMAND_STOP_CHIP_TRANSPORT);
-  writeBlock("TODO")
   writeBlock(mFormat.format(30)); // stop program, spindle stop, coolant off
 
   if (subprograms.length > 0) {
