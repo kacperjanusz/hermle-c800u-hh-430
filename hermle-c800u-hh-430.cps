@@ -60,7 +60,8 @@ properties = {
   useParametricFeed: true, // specifies that feed should be output using Q values
   showNotes: true, // specifies that operation notes should be output.
   preferTilt: -1, // -1: negative, 0:dont care, 1: positive
-  homeXYBetweenOperations: false // specifies to do a full retract in Z, X and Y for each operation
+  homeXYBetweenOperations: false, // specifies to do a full retract in Z, X and Y for each operation
+  useBigPartRetract: false // specifies to move also y axis during M140 operation
 };
 
 // user-defined property definitions
@@ -84,17 +85,18 @@ propertyDefinitions = {
   useParametricFeed:  {title:"Parametric feed", description:"Specifies the feed value that should be output using a Q value.", type:"boolean"},
   showNotes: {title:"Show notes", description:"Writes operation notes as comments in the outputted code.", type:"boolean"},
   preferTilt: {title:"Prefer tilt", description:"Specifies which tilt direction is preferred.", type:"integer", values:[{id:-1, title:"Negative"}, {id:0, title:"Either"}, {id:1, title:"Positive"}]},
-  homeXYBetweenOperations: {title:"Home XY between operations", description:"Specifies to do a full retract in Z, X and Y for each operation.", type:"boolean"}
+  homeXYBetweenOperations: {title:"Home XY between operations", description:"Specifies to do a full retract in Z, X and Y for each operation.", type:"boolean"},
+  useBigPartRetract: {title:"Use big part retract", description:"Specifies to move also y axis during M140 operation", type:"boolean"}
 };
 
 // samples:
 // throughTool: {on: 88, off: 89}
 // throughTool: {on: [8, 88], off: [9, 89]}
 var coolants = {
-  flood: {on: 8, off: 9},
+  flood: {on: [8, 10], off: [9, 10]},
   mist: {},
   throughTool: {on:51, off:52},
-  air: {on:7, off:9},
+  air: {on: [7, 10], off:[9,11]},
   airThroughTool: {on:12, off:9},
   suction: {on: 10, off: 11},
   // floodMist: flood on M8, air on M7, air suction on M10, flood off M9
@@ -2572,7 +2574,9 @@ function writeRetract() {
       if (properties.useM140) {
         validate((arguments.length <= 1), "Retracts for the Z-axis have to be specified separately by using the useM140 property.");
         writeBlock("L " + mFormat.format(140) + " MB MAX");
-        writeBlock("L Y+639 FMAX M91");
+        if (useBigPartRetract) { 
+            writeBlock("L Y+639 FMAX M91");
+        }
         retracted = true; // specifies that the tool has been retracted to the safe plane
         zOutput.reset();
         return;
