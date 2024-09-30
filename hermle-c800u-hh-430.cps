@@ -93,10 +93,10 @@ propertyDefinitions = {
 // throughTool: {on: 88, off: 89}
 // throughTool: {on: [8, 88], off: [9, 89]}
 var coolants = {
-  flood: {on: [8, 10], off: 9},
+  flood: {on: [8, 10], off: [9, 10]},
   mist: {},
   throughTool: {on:51, off:52},
-  air: {on: [7, 10], off: 9},
+  air: {on: [7, 10], off:[9,11]},
   airThroughTool: {on:12, off:9},
   suction: {on: 10, off: 11},
   // floodMist: flood on M8, air on M7, air suction on M10, flood off M9
@@ -2574,7 +2574,7 @@ function writeRetract() {
       if (properties.useM140) {
         validate((arguments.length <= 1), "Retracts for the Z-axis have to be specified separately by using the useM140 property.");
         writeBlock("L " + mFormat.format(140) + " MB MAX");
-        if (useBigPartRetract) { 
+        if (properties.useBigPartRetract) { 
             writeBlock("L Y+639 FMAX M91");
         }
         retracted = true; // specifies that the tool has been retracted to the safe plane
