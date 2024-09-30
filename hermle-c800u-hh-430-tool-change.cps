@@ -1065,7 +1065,7 @@ function onSection() {
     // retract to safe plane
     if (!properties.useM140 || !isFirstSection()) { // cannot use M140 here since no tool is called yet which specifies the tool axis for M140
       writeRetract(Z);
-      writeRetract(y)
+      writeRetract(Y);
     }
 
     if (fullRetract) {
