@@ -1851,13 +1851,15 @@ function setWCS() {
     // datum shift after tool call
     if (useCycl247) {
       if (workOffsetLabels[currentSection.workOffset]) {
-        // change machine parameter, to deactivate tilting - prevent 3D ROT error
-        writeBlock("FN 17: SYSWRITE ID210 NR6 = 0");
-        // writeBlock("CALL LBL " + workOffsetLabels[currentSection.workOffset] + " ;DATUM");
+        writeBlock(
+          "CALL LBL " + workOffsetLabels[currentSection.workOffset] + " ;DATUM"
+        );
       } else {
         workOffsetLabels[currentSection.workOffset] = nextLabel;
-        writeBlock("LBL " + nextLabel);
-        ++nextLabel;
+        // writeBlock("LBL " + nextLabel);
+        // ++nextLabel;
+        // change machine parameter, to deactivate tilting - prevent 3D ROT error
+        writeBlock("FN 17: SYSWRITE ID210 NR6 = 0");
         writeBlock(
           "CYCL DEF 247 " +
             localize("DATUM SETTING") +
