@@ -1849,18 +1849,20 @@ function setWCS() {
       return;
     }
     // datum shift after tool call
-    if (useCycl247 && isFirstSection()) {
-      writeBlock("FN 17: SYSWRITE ID210 NR6 = 0");
-      writeBlock(
-        "CYCL DEF 247 " +
-          localize("DATUM SETTING") +
-          " ~" +
-          EOL +
-          "  Q339=" +
-          currentSection.workOffset +
-          " ; " +
-          localize("DATUM NUMBER")
-      );
+    if (useCycl247) {
+      if (isFirstSection()) {
+        writeBlock("FN 17: SYSWRITE ID210 NR6 = 0");
+        writeBlock(
+          "CYCL DEF 247 " +
+            localize("DATUM SETTING") +
+            " ~" +
+            EOL +
+            "  Q339=" +
+            currentSection.workOffset +
+            " ; " +
+            localize("DATUM NUMBER")
+        );
+      }
     } else {
       writeBlock("CYCL DEF 7.0 " + localize("DATUM SHIFT"));
       writeBlock("CYCL DEF 7.1 #" + currentSection.workOffset);
