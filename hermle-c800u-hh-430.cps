@@ -190,10 +190,10 @@ propertyDefinitions = {
 // throughTool: {on: 88, off: 89}
 // throughTool: {on: [8, 88], off: [9, 89]}
 var coolants = {
-  flood: { on: [8, 10], off: [9, 10] },
+  flood: { on: [8, 10], off: 9 },
   mist: {},
   throughTool: { on: 51, off: 52 },
-  air: { on: [7, 10], off: [9, 11] },
+  air: { on: [7, 10], off: 9 },
   airThroughTool: { on: 12, off: 9 },
   suction: { on: 10, off: 11 },
   // floodMist: flood on M8, air on M7, air suction on M10, flood off M9
