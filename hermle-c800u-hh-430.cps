@@ -5269,6 +5269,13 @@ function writeRetract() {
   zOutput.reset();
 }
 
+function onPassThrough(text) {
+  var commands = String(text).split(",");
+  for (text in commands) {
+    writeBlock(commands[text]);
+  }
+}
+
 function onClose() {
   optionalSection = false;
 
