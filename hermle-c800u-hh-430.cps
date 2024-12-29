@@ -59,8 +59,8 @@ properties = {
   useParametricFeed: true, // specifies that feed should be output using Q values
   showNotes: true, // specifies that operation notes should be output.
   preferTilt: -1, // -1: negative, 0:dont care, 1: positive
-  homeXYBetweenOperations: false, // specifies to do a full retract in Z, X and Y for each operation
-  homeXYAtEnd: false,
+  useParkPositionOperation: false, // specifies to do a full retract in Z, X and Y for each operation
+  useParkPosition: false,
 };
 
 // user-defined property definitions
@@ -173,13 +173,13 @@ propertyDefinitions = {
       { id: 1, title: "Positive" },
     ],
   },
-  homeXYBetweenOperations: {
+  useParkPositionOperation: {
     title: "Home XY between operations",
     description:
       "Specifies to do a full retract in Z, X and Y for each operation.",
     type: "boolean",
   },
-  homeXYAtEnd: {
+  useParkPosition: {
     title: "Home XY at end",
     description:
       "Specifies that the machine moves to the home position in XY at the end of the program.",
@@ -1446,7 +1446,7 @@ function onSection() {
     }
   }
 
-  if (properties.homeXYBetweenOperations) {
+  if (properties.useParkPositionOperation) {
     // force XY Z retracts
     if (!retracted) {
       writeRetract(Z);
@@ -5288,7 +5288,7 @@ function onClose() {
 
   writeRetract(Z);
 
-  if (properties.homeXYAtEnd) {
+  if (properties.useParkPosition) {
     writeRetract(X, Y);
   }
 
