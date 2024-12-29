@@ -17,7 +17,7 @@ legal = "Copyright (C) 2012-2018 by Autodesk, Inc.";
 certificationLevel = 2;
 minimumRevision = 24000;
 
-longDescription = "5-axis post for Hermle C12U with a Heidenhain control.";
+longDescription = "5-axis post for Hermle C800U with a Heidenhain TNC430 control.";
 
 extension = "h";
 if (getCodePage() == 932) {
