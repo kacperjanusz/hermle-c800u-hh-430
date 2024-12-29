@@ -60,7 +60,7 @@ properties = {
   showNotes: true, // specifies that operation notes should be output.
   preferTilt: -1, // -1: negative, 0:dont care, 1: positive
   homeXYBetweenOperations: false, // specifies to do a full retract in Z, X and Y for each operation
-  useBigPartRetract: false, // specifies to move also y axis during M140 operation
+  homeXYAtEnd: false,
 };
 
 // user-defined property definitions
@@ -179,9 +179,10 @@ propertyDefinitions = {
       "Specifies to do a full retract in Z, X and Y for each operation.",
     type: "boolean",
   },
-  useBigPartRetract: {
-    title: "Use big part retract",
-    description: "Specifies to move also y axis during M140 operation",
+  homeXYAtEnd: {
+    title: "Home XY at end",
+    description:
+      "Specifies that the machine moves to the home position in XY at the end of the program.",
     type: "boolean",
   },
 };
@@ -387,12 +388,10 @@ function onOpen() {
     optimizeMachineAngles2(0); // using M128 mode
   }
 
-  /*
   // NOTE: setup your home positions here
-  machineConfiguration.setRetractPlane(-20.415); // home position Z
-  machineConfiguration.setHomePositionX(-200); // home position X
-  machineConfiguration.setHomePositionY(-5); // home position Y
-*/
+  // machineConfiguration.setRetractPlane(-20.415); // home position Z
+  machineConfiguration.setHomePositionX(-413,5); // home position X
+  machineConfiguration.setHomePositionY(585); // home position Y
 
   if (!machineConfiguration.isMachineCoordinate(0)) {
     aOutput.disable();
@@ -1442,8 +1441,8 @@ function onSection() {
     }
 
     if (fullRetract) {
-      // writeRetract(X);
-      // writeRetract(Y);
+      writeRetract(X);
+      writeRetract(Y);
     }
   }
 
@@ -1525,8 +1524,8 @@ function onSection() {
 
     if (fullRetract) {
       writeRetract(Z);
-      // writeRetract(X);
-      // writeRetract(Y);
+      writeRetract(X);
+      writeRetract(Y);
     } else {
       // simple retract
       writeRetract(Z);
@@ -5195,17 +5194,6 @@ function onSectionEnd() {
   invalidate();
 }
 
-properties.homeXYAtEnd = false;
-if (propertyDefinitions === undefined) {
-  propertyDefinitions = {};
-}
-propertyDefinitions.homeXYAtEnd = {
-  title: "Home XY at end",
-  description:
-    "Specifies that the machine moves to the home position in XY at the end of the program.",
-  type: "boolean",
-};
-
 /** Output block to do safe retract and/or move to home position. */
 function writeRetract() {
   if (arguments.length == 0) {
@@ -5242,9 +5230,6 @@ function writeRetract() {
             "Retracts for the Z-axis have to be specified separately by using the useM140 property."
           );
           writeBlock("L " + mFormat.format(140) + " MB MAX");
-          if (properties.useBigPartRetract) {
-            writeBlock("L Y+639 FMAX M91");
-          }
           retracted = true; // specifies that the tool has been retracted to the safe plane
           zOutput.reset();
           return;
