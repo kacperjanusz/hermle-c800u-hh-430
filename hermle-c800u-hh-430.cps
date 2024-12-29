@@ -10,7 +10,7 @@
   FORKID {6C22D074-6059-43A4-8AD9-B7E2CCA4B6A9}
 */
 
-description = "Hermle C12U";
+description = "Hermle C800U";
 vendor = "Hermle";
 vendorUrl = "http://www.hermlemachine.com";
 legal = "Copyright (C) 2012-2018 by Autodesk, Inc.";
