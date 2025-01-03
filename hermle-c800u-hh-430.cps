@@ -773,7 +773,15 @@ function setWorkPlane(abc, turn, isPrepositioned) {
         writeBlock(
           "L" +
             (machineConfiguration.isMachineCoordinate(0) ? " A+Q120" : "") +
+            " R0 FMAX"
+        );
+        writeBlock(
+          "L" +
             (machineConfiguration.isMachineCoordinate(1) ? " B+Q121" : "") +
+            " R0 FMAX"
+        );
+                writeBlock(
+          "L" +
             (machineConfiguration.isMachineCoordinate(2) ? " C+Q122" : "") +
             " R0 FMAX"
         );
