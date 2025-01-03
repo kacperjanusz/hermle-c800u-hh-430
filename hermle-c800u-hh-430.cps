@@ -5305,16 +5305,26 @@ function onClose() {
     writeBlock(
       "L" +
         conditional(
-          machineConfiguration.isMachineCoordinate(0),
-          " A" + abcFormat.format(0)
+          machineConfiguration.isMachineCoordinate(2),
+          " C" + abcFormat.format(0)
         ) +
+        " FMAX " +
+        mFormat.format(94)
+    );
+    writeBlock(
+      "L" +
         conditional(
           machineConfiguration.isMachineCoordinate(1),
           " B" + abcFormat.format(0)
         ) +
+        " FMAX " +
+        mFormat.format(94)
+    );
+    writeBlock(
+      "L" +
         conditional(
-          machineConfiguration.isMachineCoordinate(2),
-          " C" + abcFormat.format(0)
+          machineConfiguration.isMachineCoordinate(0),
+          " A" + abcFormat.format(0)
         ) +
         " FMAX " +
         mFormat.format(94)
