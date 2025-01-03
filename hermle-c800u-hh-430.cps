@@ -1441,8 +1441,8 @@ function onSection() {
     }
 
     if (fullRetract) {
-      writeRetract(X);
-      writeRetract(Y);
+      // writeRetract(X);
+      // writeRetract(Y);
     }
   }
 
